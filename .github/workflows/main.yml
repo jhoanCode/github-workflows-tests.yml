@@ -1,0 +1,21 @@
+name: Merge from Dev to Main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Merge from Dev
+      run: |
+        git fetch origin dev
+        git merge origin/dev --no-commit --no-ff
+        git commit -m "Merge from dev" || echo "No changes to commit"
+        git push origin main
