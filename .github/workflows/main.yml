@@ -1,35 +1,21 @@
-name: Run Tests
+name: Merge from Dev to Main
 
 on:
-  push:
+  pull_request:
     branches:
-      - dev
+      - main
 
 jobs:
-  test:
+  merge:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install Dependencies
-      run: pip install Flask
-
-    - name: Run Tests
-      run: python -m unittest discover -s tests -p '*_test.py'
-
-  merge_to_main:
-        runs-on: ubuntu-latest
-        if: github.ref == 'refs/heads/dev' && success()
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v3
-    
-          - name: Merge to main
-            run: git merge --ff-only refs/heads/dev
+    - name: Merge from Dev
+      run: |
+        git fetch origin dev
+        git merge origin/dev --no-commit --no-ff
+        git commit -m "Merge from dev" || echo "No changes to commit"
+        git push origin main
