@@ -28,7 +28,7 @@ jobs:
       run: pip install Flask
 
     - name: Run Tests
-      run: python -m unittest discover -s tests -p '*_test.py'
+      run: python -m unittest discover -s tests -p '*_test_app.py'
 
     - name: Push changes to Main
       if: success()
