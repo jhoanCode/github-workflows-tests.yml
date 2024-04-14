@@ -23,10 +23,3 @@ jobs:
 
     - name: Run Tests
       run: python -m unittest discover -s tests -p '*_test.py'
-
-    - name: Set Status
-      if: ${{ failure() }}
-      run: echo "Tests failed" && exit 1 || echo "Tests passed" && exit 0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
