@@ -1,17 +1,23 @@
-name: Run Tests
+name: Merge from Dev to Main
 
 on:
-  push:
+  pull_request:
     branches:
-      - dev
+      - main
 
 jobs:
-  test:
+  merge:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+
+    - name: Merge from Dev
+      run: |
+        git fetch origin dev
+        git merge origin/dev --no-commit --no-ff
+        git commit -m "Merge from dev" || echo "No changes to commit"
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -22,4 +28,8 @@ jobs:
       run: pip install Flask
 
     - name: Run Tests
-      run: python -m unittest discover -s tests -p '*_test_app.py'
+      run: python -m unittest discover -s tests -p '*_test.py'
+
+    - name: Push changes to Main
+      if: success()
+      run: git push origin main
