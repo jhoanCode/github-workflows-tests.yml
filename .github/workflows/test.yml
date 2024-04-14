@@ -1,0 +1,63 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Dependencies
+      run: pip install Flask
+
+    - name: Run Tests
+      run: python -m unittest discover -s tests -p '*_test.py'
+
+
+
+# name: Run Tests
+
+# on:
+#   push:
+#     branches:
+#       - dev
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout Repository
+#       uses: actions/checkout@v2
+
+#     - name: Set up Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.x'
+
+#     - name: Install Dependencies
+#       run: pip install Flask
+
+#     - name: Run Tests
+#       run: python -m unittest discover -s tests -p '*_test.py'
+
+#   merge_to_main:
+#         runs-on: ubuntu-latest
+#         if: github.ref == 'refs/heads/dev' && success()
+#         steps:
+#           - name: Checkout repository
+#             uses: actions/checkout@v3
+    
+#           - name: Merge to main
+#             run: git merge --ff-only refs/heads/dev
